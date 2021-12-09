@@ -48,5 +48,11 @@ public class BikeCollection implements BikeDAO {
 		return bike;
 	}
 
+	@Override
+	public List<Bike> getAllByQuery(String query, String search) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 }

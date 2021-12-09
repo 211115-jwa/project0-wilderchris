@@ -9,6 +9,6 @@ public interface BikeDAO extends GenericDAO<Bike> {
 
 	public List<Bike> getAllByBrand(String brand);
 	public List<Bike> getAllByModel(String model);
-	
+	public List<Bike> getAllByQuery(String query, String search);
 
 }
