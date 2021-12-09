@@ -18,121 +18,93 @@ public class BikeShopDriver {
 			path("/bikes", () -> {
 			
 				get(ctx -> {
-					
-					String modelSearch = ctx.queryParam("model");
-					String brandSearch = ctx.queryParam("brand");
-					
-							
-					
-					
+				String modelSearch = ctx.queryParam("model");
+				String brandSearch = ctx.queryParam("brand");
+				String idSearch = ctx.queryParam("id");
+																															// search by brand
 					if (brandSearch != null && !"".equals(brandSearch)) {
-						
-						
-						
-						ctx.result("GET to /bikes?brand=" + brandSearch + " successful");
+						BikeCollections dao = new BikeCollections();
+						//working, testing needed
+						ctx.json(dao.getAllByQuery("bikebrand",(brandSearch)));	
+																					// search by model
 					} else if (modelSearch != null && !"".equals(modelSearch)) {
+						BikeCollections dao = new BikeCollections();
+						//working, testing needed
+						ctx.json(dao.getAllByQuery("bikemodel",(modelSearch)));	
 						
-						
-						
-						ctx.result("GET to /bikes?model=" + modelSearch + " successful");
-					} else {
-						//all working for the moment, recheck test and refactor
-						BikeCollections bike = new BikeCollections();
-						ctx.json(bike.getAll());
-						
-						
+																																
+					}else if(idSearch != null && !"".equals(idSearch)) {		//search by id
+						BikeCollections dao = new BikeCollections();
+						ctx.json(dao.getAllByQuery("id",(idSearch)));			//working, testing needed
+																				//    get by id
+					}	else {													// get all bikes
+						BikeCollections dao = new BikeCollections();			//all working for the moment, recheck test and refactor
+						ctx.json(dao.getAll());
 					}	
-						
-								
+											
 				});
 				
 					post(ctx -> {
+						//
+						BikeCollections dao = new BikeCollections();
+							Bike b = new Bike();
+							b.setId(Integer.parseInt(ctx.queryParam("id")));
+							b.setName(ctx.queryParam("name"));
+							b.setColor(ctx.queryParam("color"));
+							b.setBrand(ctx.queryParam("brand"));
+							b.setModel(ctx.queryParam("model"));
+							b.setType(ctx.queryParam("type"));
+							b.setSize(ctx.queryParam("size"));
+							b.setFrame(ctx.queryParam("frame"));
+							b.setMaterial(ctx.queryParam("material"));
+							b.setWheelSet(ctx.queryParam("wheelset"));
+							b.setOnHand(Integer.parseInt(ctx.queryParam("onHand")));
+																	
+						int success = (dao.create(b));
 						
-//						
+						if(success == 1)						
 						ctx.result("POST to /bikes successful");
 				
 					});
 										
-				path("/create/{id}{name}{color}{brand}{model}{type}{size}{frame}{material}{wheelset}{onHand}", () -> {
+				path("/bikes/delete/{id}", () -> {//delete working   test
 				
 					put(ctx -> {
-						
+						//put in postman..   path  http://localhost:8080/bikes/delete:ID
 						String id = ctx.pathParam("id");
-//						
-//						
-						
-						
-						ctx.result("PUT to /bikes/purchase/" + id + " successful");
+						BikeCollections dao = new BikeCollections();
+						dao.delete(Integer.parseInt(id));
+						ctx.result("Deleted bike with " + id + "for an id successful");
 					});
 							
 				});
 				
-				//working
+				
 				path("/{id}", () -> {
 					
-					get(ctx -> {
-						String id = ctx.pathParam("id");
-						BikeCollections bike = new BikeCollections();
-						
-						//working, testing needed
-						ctx.json(bike.getById(Integer.parseInt(id)));
+					get(ctx -> {////moved to query
+//						String id = ctx.pathParam("id");
+//						BikeCollections dao = new BikeCollections();
+//						//working, testing needed
+//						ctx.json(dao.getById(Integer.parseInt(id)));
 					});
 					
+					
+					
+					
 					put(ctx -> {
-						//String id = ctx.pathParam("id");
-						BikeCollections bike = new BikeCollections();
+						String id = ctx.pathParam("id");
 						
-						Bike b = new Bike();
-						b.setId(Integer.parseInt(ctx.pathParam("id")));
-						b.setName(ctx.pathParam("name"));
-						b.setColor(ctx.pathParam("color"));
-						b.setBrand(ctx.pathParam("brand"));
-						b.setModel(ctx.pathParam("model"));
-						b.setType(ctx.pathParam("type"));
-						b.setSize(ctx.pathParam("size"));
-						b.setFrame(ctx.pathParam("frame"));
-						b.setMaterial(ctx.pathParam("material"));
-						b.setWheelSet(ctx.pathParam("wheelset"));
-						b.setOnHand(Integer.parseInt(ctx.pathParam("onHand")));
-																	
-						int success = (bike.create(b));
 						
-						if(success == 1)
-						ctx.result("PUT to /bikess/" + b + " successful");
+						
+						ctx.result("PUT to /bikess/" + id + " successful");
 					});
 				
 				
 				});
 			});
 		});
-		// TODO Auto-generated method stub
 		
-//		ArrayList<String> bikes = new ArrayList<String>();
-//		ArrayList<Double> grams = new ArrayList<Double>();
-//		
-//		bikes.add(0,"Huffy");
-//		bikes.add(1,"Golden Cycles");
-//		bikes.add(2,"All-City Cycles");
-//		bikes.add(3,"Bakcou");
-//		bikes.add(4,"Bianchi");
-//		bikes.add(5,"Brompton");
-//		bikes.add(6,"Buzz");
-//		bikes.add(7,"Co-op Cycles");
-//		bikes.add(8,"Devinci");
-//		bikes.add(9,"Diamondback");
-//		bikes.add(10,"Electra");
-//		
-//		grams.add(0,(double) 59);
-//		grams.add(1,(double) 64);
-//		grams.add(2,(double) 33);
-//		grams.add(3,(double) 56);
-//		grams.add(4,(double) 48);
-//		grams.add(5,(double) 41);
-//		grams.add(6,(double) 59);
-//		grams.add(7,(double) 61);
-//		grams.add(8,(double) 181);
-//		grams.add(9,(double) 29);
-//		grams.add(10,(double) 204);
 		
 	}
 
