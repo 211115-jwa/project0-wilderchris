@@ -2,13 +2,10 @@ package com.revature.data;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
 import com.revature.beans.Bike;
@@ -30,12 +27,13 @@ public class BikeDAOTest {
 			//System.out.println(bike);
 			assertNotNull(bike);
 		}
-	@Test
-		public void testIfThereAreNoBikes() {
-			bikes = null;
-			//bikes = dao.getAll();
-			assertNull(bikes);
-		}
+//	@Test
+//		public void testIfThereAreNoBikes() {
+//			bikes = null;
+//			//bikes = dao.getAll();
+//			System.out.println(bikes);
+//			assertNull(bikes);
+//		}
 		@Test
 		public void getByIdWhenIdExists() {
 			int idInput = 10;
@@ -48,9 +46,10 @@ public class BikeDAOTest {
 //		@Test
 //		public void getByIdWhenIdDoesntExist() {
 //			int idInput = 99;
-//			Bike id = dao.getById(idInput);
-//			System.out.println(id.getId());
-//			assertNull(id.getId());
+//			List<Bike> id = null;
+//			id = dao.getById(idInput);
+//			System.out.println(id);
+//		//	assertEquals(id.getId(), idInput);
 //			
 //		}
 //		

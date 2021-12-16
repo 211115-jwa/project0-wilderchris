@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.revature.beans.Bike;
 
-public class BikeCollection implements BikeDAO {
+public class BikeCollection {
 
 	public int create(Bike dataToSave) throws Exception {
 		// TODO Auto-generated method stub
@@ -48,7 +48,7 @@ public class BikeCollection implements BikeDAO {
 		return bike;
 	}
 
-	@Override
+	
 	public List<Bike> getAllByQuery(String query, String search) {
 		// TODO Auto-generated method stub
 		return null;

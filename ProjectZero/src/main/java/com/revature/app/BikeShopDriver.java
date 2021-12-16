@@ -1,103 +1,119 @@
 package com.revature.app;
 
 import io.javalin.Javalin;
+import io.javalin.http.HttpCode;
+
 import static io.javalin.apibuilder.ApiBuilder.*;
 
+import org.eclipse.jetty.http.HttpStatus;
+
 import com.revature.beans.Bike;
-import com.revature.data.collections.BikeCollections;
+import com.revature.services.UserService;
+import com.revature.services.UserServiceImpl;
 
 public class BikeShopDriver {
 
 	public static void main(String[] args) {
 		
+		UserService us = new UserServiceImpl();
 		Javalin app = Javalin.create();
+		
 		app.start();
 		
 		app.routes(() -> {
 			
-			path("/bikes", () -> {
+			path("/bikes", () -> {                                    //        switch collections to postgresql
 			
-				get(ctx -> {
+				get(ctx -> {// fix for getall to see if it works
 				String modelSearch = ctx.queryParam("model");
 				String brandSearch = ctx.queryParam("brand");
-				String idSearch = ctx.queryParam("id");
-																															// search by brand
+				
+																	// search by brand
 					if (brandSearch != null && !"".equals(brandSearch)) {
-						BikeCollections dao = new BikeCollections();
-						//working, testing needed
-						ctx.json(dao.getAllByQuery("bikebrand",(brandSearch)));	
-																					// search by model
-					} else if (modelSearch != null && !"".equals(modelSearch)) {
-						BikeCollections dao = new BikeCollections();
-						//working, testing needed
-						ctx.json(dao.getAllByQuery("bikemodel",(modelSearch)));	
 						
-																																
-					}else if(idSearch != null && !"".equals(idSearch)) {		//search by id
-						BikeCollections dao = new BikeCollections();
-						ctx.json(dao.getAllByQuery("id",(idSearch)));			//working, testing needed
-																				//    get by id
-					}	else {													// get all bikes
-						BikeCollections dao = new BikeCollections();			//all working for the moment, recheck test and refactor
-						ctx.json(dao.getAll());
+						ctx.json(us.getByBrand((brandSearch)));	
+																					// search by model 
+					} else if (modelSearch != null && !"".equals(modelSearch)) {
+						
+						ctx.json(us.getByModel((modelSearch)));	
+																														
+									
+					}	else {					// get all bikes
+						// recheck test and refactor
+						ctx.json(us.viewAllAvailableBikes());
 					}	
 											
 				});
 				
 					post(ctx -> {
 						//
-						BikeCollections dao = new BikeCollections();
-							Bike b = new Bike();
-							b.setId(Integer.parseInt(ctx.queryParam("id")));
-							b.setName(ctx.queryParam("name"));
-							b.setColor(ctx.queryParam("color"));
-							b.setBrand(ctx.queryParam("brand"));
-							b.setModel(ctx.queryParam("model"));
-							b.setType(ctx.queryParam("type"));
-							b.setSize(ctx.queryParam("size"));
-							b.setFrame(ctx.queryParam("frame"));
-							b.setMaterial(ctx.queryParam("material"));
-							b.setWheelSet(ctx.queryParam("wheelset"));
-							b.setOnHand(Integer.parseInt(ctx.queryParam("onHand")));
-																	
-						int success = (dao.create(b));
-						
-						if(success == 1)						
-						ctx.result("POST to /bikes successful");
-				
+						// add new bike			create
+							Bike b = ctx.bodyAsClass(Bike.class);	
+							if (b !=null) {
+								us.addNewBike(b);
+								ctx.status(HttpStatus.CREATED_201);
+							} else {
+								ctx.status(HttpStatus.BAD_REQUEST_400);
+							}
+
+							
+																
 					});
 										
-				path("/bikes/delete/{id}", () -> {//delete working   test
-				
+				path("/delete/{id}", () -> {//delete 
+					
 					put(ctx -> {
 						//put in postman..   path  http://localhost:8080/bikes/delete:ID
 						String id = ctx.pathParam("id");
-						BikeCollections dao = new BikeCollections();
-						dao.delete(Integer.parseInt(id));
+						
+						us.removeBike(Integer.parseInt(id));
 						ctx.result("Deleted bike with " + id + "for an id successful");
 					});
 							
 				});
 				
 				
-				path("/{id}", () -> {
+				path("/{id}", () -> {// get by ID
 					
-					get(ctx -> {////moved to query
-//						String id = ctx.pathParam("id");
-//						BikeCollections dao = new BikeCollections();
-//						//working, testing needed
-//						ctx.json(dao.getById(Integer.parseInt(id)));
+					get(ctx -> {
+//						
+						try {
+							int id = Integer.parseInt(ctx.pathParam("id")); // num format exception
+							Bike b = us.getById(id);
+							if (b != null)
+								ctx.json(b);
+							else
+								ctx.status(404);
+						} catch (NumberFormatException e) {
+							ctx.status(400);
+							ctx.result("Bike needs to be a numerical value");
+						}
+
 					});
 					
 					
 					
 					
-					put(ctx -> {
-						String id = ctx.pathParam("id");
-						
-						
-						
-						ctx.result("PUT to /bikess/" + id + " successful");
+					put(ctx -> {//update
+						try {
+							int bikeId = Integer.parseInt(ctx.pathParam("id")); // num format exception
+							Bike b = ctx.bodyAsClass(Bike.class);
+							if (b != null && b.getId() == bikeId) {
+								
+								b = us.editBike(b);
+								if (b != null)
+									ctx.json(b);
+								else
+									ctx.status(404);
+							} else {
+								// conflict: the id doesn't match the id of the pet sent
+								ctx.status(HttpCode.CONFLICT);
+							}
+						} catch (NumberFormatException e) {
+							ctx.status(400);
+							ctx.result("Pet ID must be a numeric value");
+						}
+
 					});
 				
 				
