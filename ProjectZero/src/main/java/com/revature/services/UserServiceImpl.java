@@ -1,8 +1,7 @@
 package com.revature.services;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Iterator;
 import java.util.Set;
 
 import com.revature.beans.Bike;
@@ -11,90 +10,77 @@ import com.revature.exceptions.InvalidBikeException;
 import com.revature.postgres.BikePostgres;
 
 public class UserServiceImpl implements UserService {
-	private List<Bike> allBikes = new ArrayList<Bike>();
+	private Set<Bike> allBikes = new HashSet<Bike>();
 	private BikeDAO dao = new BikePostgres();
-		
-@Override
-	public List<Bike> getByBrand(String brand){
-		List<Bike> b = new ArrayList<Bike>();
-		allBikes = dao.getAll();
-		for(int i = 0;i < allBikes.size();i++) {
-			if( allBikes.get(i).getBrand().equals(brand)) {
-				b.add(allBikes.get(i));
-			}
-		}
-		return b;
-	}
-
-@Override
-	public List<Bike> getByModel(String model){
-	
-	List<Bike> b = new ArrayList<Bike>();
-	allBikes = dao.getAll();
-	for(int i = 0;i < allBikes.size();i++) {
-		
-		if( allBikes.get(i).getModel().equals(model)) {
-			b.add(allBikes.get(i));
-			
-		}
-		
-	}
-	
-	return b;
-
-
-}
 
 	@Override
-	public List<Bike> viewAllAvailableBikes() {
+	public Set<Bike> getByBrand(String brand) {// search by brand using
+		Set<Bike> bikes = new HashSet<Bike>(); // the getALl DAO
+		allBikes = dao.getAll(); // and then iterate throught eh set
+		for (Iterator<Bike> it = allBikes.iterator(); it.hasNext();) {// until it finds
+			// the brand
+			Bike b = it.next(); // and then we
+			if (b.getBrand().equals(brand)) { // add it to the bike collection
+				bikes.add(b);
+			}
+		}
+		return bikes; // and return all bikes set match brand search
+	}
+
+	@Override
+	public Set<Bike> getByModel(String model) {
+		// model search works similar to
+		Set<Bike> bikes = new HashSet<Bike>(); // brands
+		allBikes = dao.getAll(); // uses the getall and
+		for (Iterator<Bike> it = allBikes.iterator(); it.hasNext();) {// then iterates through
+			Bike b = it.next(); // the set allBikes
+			if (b.getModel().equals(model)) { // b gets each bike
+				bikes.add(b); // checks for model and
+			} // then added to bike
+		}
+		return bikes; // set and returned
+	}
+
+	@Override
+	public Set<Bike> viewAllBikes() {// gets all bikes from the get all dao
 		allBikes = dao.getAll();
 		return allBikes;
 	}
-	
-	public Set<Bike> getByQuery(String query, String search){		
-		Set<Bike> b = new HashSet<>();
-//
-//		
-return b;
-		
-	}
 
 	@Override
-	public void addNewBike(Bike bikeToAdd) {
-		try {
+	public void addNewBike(Bike bikeToAdd) {// adds bike
+		try { // uses the dao create
 			dao.create(bikeToAdd);
-		} catch (Exception e) {
+		} catch (Exception e) { // checks for exception
 			e.printStackTrace();
 		}
 	}
 
-
 	@Override
-	public Bike getById(int id) {
+	public Bike getById(int id) { // get by id uses the dao get by id and
 		Bike b = new Bike();
-		
+
 		b = dao.getById(id);
-		return b;
+		return b; // returns the bike that matches
 	}
 
-
-	@Override
-	public Bike editBike(Bike b) {
-		dao.update(b);
-		
-		return b;
+	@Override								
+	public Bike editBike(Bike b) throws InvalidBikeException {// edit bike 
+		dao.update(b);							// uses the update dao
+		return b;								// returns bike after update
 	}
 
-
 	@Override
-	public void removeBike(int id) {
+	public int removeBike(int id) throws InvalidBikeException {// delete
+		int success = 0;
 		Bike b = dao.getById(id);
-		try {
-			dao.delete(b);
-		} catch (InvalidBikeException e) {
-			e.printStackTrace();
+		if (b.getName() == "") { // removed exception, wont throw since test for vaild id
+			success = 1; // since I test for the issue and return success
+			// throw new InvalidBikeException("Bike Does not exist");
 		}
-		
-		
+		if (success == 0) {
+			success = dao.delete(b); // if the id is a valid id then delete
+		}
+		return success;// return success
 	}
 }

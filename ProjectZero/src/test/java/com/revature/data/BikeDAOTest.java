@@ -1,25 +1,63 @@
 package com.revature.data;
 import static org.junit.jupiter.api.Assertions.*;
 
-
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.revature.beans.Bike;
-import com.revature.data.collections.BikeCollections;
+import com.revature.postgres.BikePostgres;
 
 public class BikeDAOTest {
-	Set<Bike> bikes = new HashSet<Bike>();
-	private BikeCollections dao = new BikeCollections();
+	List<Bike> bikes = new ArrayList<Bike>();
+	private BikeDAO dao = new BikePostgres();
 		
-//	@BeforeAll
-//	public void initAll() {
-//		
-//	}
-	@Test
+	@BeforeAll
+	public static void initAll() {
+
+		
+		
+	}
+	
+	
+	@Test					// testing create if there are no bikes
+	public void testCreateForBikes() {
+		
+		
+		
+		
+	}
+	@Test					// testing create if there are no bikes
+	public void testCreateForNoBikes() {
+		
+	}
+	
+	
+	@Test							// testing getById if there is an Id
+	public void getByIdWhenIdExists() {
+		int idInput = 10;
+		Bike b = dao.getById((idInput));
+		//Bike bike = dao.getById(idInput);
+		assertEquals(idInput,b.getId());
+		
+		
+	}
+	@Test							// testing getById if there is no ID
+	public void getByIdWhenIdDoesntExist() {
+		int idInput = 99;
+		Bike id = null;
+		id = dao.getById(idInput);
+		System.out.println(id);
+	//	assertEquals(id.getId(), idInput);
+		
+	}
+	
+	
+	@Test					//testing getall for bikes
 		public  void testIfThereAreBikes() {//
 		Set<Bike> bike = new HashSet<Bike>();
 			bike = null;
@@ -27,79 +65,33 @@ public class BikeDAOTest {
 			//System.out.println(bike);
 			assertNotNull(bike);
 		}
-//	@Test
-//		public void testIfThereAreNoBikes() {
-//			bikes = null;
-//			//bikes = dao.getAll();
-//			System.out.println(bikes);
-//			assertNull(bikes);
-//		}
-		@Test
-		public void getByIdWhenIdExists() {
-			int idInput = 10;
-			List<Bike> b = dao.getById((idInput));
-			//Bike bike = dao.getById(idInput);
-			assertEquals(idInput,b.get(0).getId());
-			
-			
+	@Test					// testing getall if there are no bikes
+		public void testIfThereAreNoBikes() {
+			bikes = null;
+			//bikes = dao.getAll();
+			System.out.println(bikes);
+			assertNull(bikes);
 		}
-//		@Test
-//		public void getByIdWhenIdDoesntExist() {
-//			int idInput = 99;
-//			List<Bike> id = null;
-//			id = dao.getById(idInput);
-//			System.out.println(id);
-//		//	assertEquals(id.getId(), idInput);
-//			
-//		}
-//		
-//		@Test
-//		public void testIfGetAllByBrandWhenThereAreBikes() {
-//			String brandIn = "huffy";
-//			List<Bike> brand = dao.getAllByBrand(brandIn);
-//			assertEquals("huffy",brand.get(0).getBrand());
-//		}
-//		
-//		@Test
-//		public void testIfGetByBrandWhenThereAreNoBikes() {
-//			String brandIn = "huffy";
-//			List<Bike> brand = dao.getAllByBrand(brandIn);
-//			System.out.println(brand.toString());
-//
-//			assertNull(brand.get(0).getBrand());
-//		}
-//		@Test
-//		public void testIfGetAllByQueryforBrandWhenThereAreBikes() {
-//			String brandIn = "huffy";
-//			List<Bike> brand = dao.getAllByQuery("bikebrand",brandIn);
-//			assertEquals("huffy",brand.get(0).getBrand());
-//		}
-//		
-//		@Test
-//		public void testIfGetByBrandWhenThereAreBikes() {
-//			String brandIn = "huffy";
-//			List<Bike> brand = dao.getAllByBrand(brandIn);
-//			System.out.println(brand.toString());
-//
-//			assertNull(brand.get(0).getBrand());
-//		}
-//		@Test
-//		public void testIfGetAllByModelWhenThereAreBikes() {
-//			String modelIn = "gravel";
-//			List<Bike> model = dao.getAllByModel(modelIn);
-//			
-//			System.out.println(model.toString());
-//			//assertNotNull(model.get(0));
-//			assertEquals("gravel",model.get(0).getModel());
-//		}
-//		
-//		@Test
-//		public void testIfGetByModelWhenThereAreNoBikes() {
-//			String modelIn = "any";
-//			List<Bike> model = dao.getAllByModel(modelIn);
-//			System.out.println(model.toString());
-//
-//			assertNull(model.get(0).getBrand());
-//		}
-
+		
+	@Test					// testing update if there is good bike data passed
+	public void testUpdateForGoodBikeData() {
+		
+	}
+	
+	@Test					// testing update if there is not good bike data passed
+	public void testUpdateForBadBikeData() {
+		
+	}
+	
+	@Test					// testing delete if there is good bike data passed
+	public void testDeleteForGoodData() {
+		
+	}
+	
+	@Test					// testing update if there is good bike data passed
+	public void testDeleteForBadBikeData() {
+		
+	}
+	
+	
 }

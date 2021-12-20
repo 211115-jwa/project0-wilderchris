@@ -7,32 +7,26 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class DAOUtilities {
-
-
+public class DAOUtilities {	// utility for database connection
+							// uses properties file to manage database data
 	private static DAOUtilities connUtil;
 	private static Properties databaseProps;
 
 	private DAOUtilities() {
 		databaseProps = new Properties();
-
 		try {
-			// grabbing the properties file using the JVM's class loader
-			InputStream propertiesFileStream = DAOUtilities.class.getClassLoader()
+				InputStream propertiesFileStream = DAOUtilities.class.getClassLoader()
 					.getResourceAsStream("database.properties");
 			databaseProps.load(propertiesFileStream);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-
 	public synchronized static DAOUtilities getConnectionUtil() {
 		if (connUtil == null)
 			connUtil = new DAOUtilities();
 		return connUtil;
 	}
-
-
 	public Connection getConnection() {
 		Connection conn = null;
 		try {
@@ -42,11 +36,6 @@ public class DAOUtilities {
 		} catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-
 		return conn;
 	}
-
-//DAOUtilities cu = DAOUtilities.getConnection();
-//Connection conn = cu.getConnection();
-
 }
