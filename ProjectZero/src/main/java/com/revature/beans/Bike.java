@@ -1,9 +1,9 @@
 package com.revature.beans;
 
 public class Bike {
-
-	private int id;
-	private String name;
+												// bicycles bean
+	private int id;								// includes hashcode, equals and tostring
+	private String name;						// overriden methods
 	private String color;
 	private String brand;
 	private String model;
@@ -12,7 +12,7 @@ public class Bike {
 	private String frame;
 	private String material;
 	private String wheelSet;
-	private int onHand;
+	
 	
 	public Bike() {
 		id = 0;
@@ -25,10 +25,10 @@ public class Bike {
 		frame = "";
 		material = "";
 		wheelSet = "";
-			onHand = 0;
+			
 	};
 
-	
+								
 	public String getType() {
 		return type;
 	}
@@ -113,15 +113,6 @@ public class Bike {
 	}
 	
 	
-	public int getOnHand() {
-		return onHand;
-	}
-
-
-	public void setOnHand(int onHand) {
-		this.onHand = onHand;
-	}
-
 
 	@Override
 	public int hashCode() {
@@ -136,8 +127,6 @@ public class Bike {
 		result = prime * result + ((frame == null) ? 0 : frame.hashCode());
 		result = prime * result + ((size == null) ? 0 : size.hashCode());
 		result = prime * result + ((wheelSet == null) ? 0 : wheelSet.hashCode());
-		
-		result = prime * result + onHand;
 		result = prime * result + id;
 		return result;
 	}
@@ -172,9 +161,7 @@ public class Bike {
 		if (id != other.id)
 			return false;
 		
-		if (id != other.onHand)
-			return false;
-		
+				
 		if (brand == null) {
 			if (other.brand != null)
 				return false;
@@ -230,7 +217,7 @@ public class Bike {
 				+ ", name=" + name + ", type=" + type 
 				+", material="+ material+", frame="+frame
 				+", wheelset="+ wheelSet+ ", size="+size  
-				+", onHand=" + onHand+ "]";
+				+ "]";
 	}
 
 	
