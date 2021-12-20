@@ -54,7 +54,7 @@ public class UserServiceTest {
 	}
 
 	@BeforeAll
-	public static void mockAvailableBikesSetup() {
+	public static void mockBikeDatabaseSetup() {
 		mockBikeDatabase = new HashSet<>();
 
 		for (int i = 1; i <= 10; i++) {
@@ -187,20 +187,6 @@ public class UserServiceTest {
 	
 		assertEquals(fail,returnValue);
 	}
-		
-	@Test
-	public void testRemoveBikeWhenIdExists() {
-		//int id=0;
-		//int returnValue = 0;
-	//	returnValue = userServ.removeBike(id);
-		
-	
-	
-	}
 
-	@Test
-	public void testRemoveBikeWhenIdDoesNotExist() {
-
-	}
 
 }

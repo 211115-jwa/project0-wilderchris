@@ -116,24 +116,3 @@ public class BikeShopDriver {
 		});
 	}
 }
-
-//Technical Requirements
-//Data must be stored and retrieved from a PostgreSQL database (local or AWS).
-//Data access in Java will be performed using JDBC DAOs.
-//HTTP handling in Java will be done using Javalin.
-//Service layers must be fully unit tested using JUnit and Mockito.
-//DAOs are fully unit tested.
-//Postman test suites are created to test all endpoints.
-
-//Functional Requirements
-//As a user, I can view all bicycles.
-//GET /bicycles
-//As a user, I can add a new bicycle.
-//POST /bicycles
-//As a user, I can update a bicycle.
-//PUT /bicycles/{id}
-//As a user, I can view bicycles by ID.
-//GET /bicycles/{id}
-//As a user, I can search bicycles by brand/model.
-//GET /bicycles?brand=
-//GET /bicycles?model=
