@@ -12,7 +12,7 @@ public interface UserService {
 		public Bike getById(int id);
 		public Set<Bike> getByModel(String model);
 		public Set<Bike> getByBrand(String brand);
-		public void addNewBike(Bike bikeToAdd);
+		public int addNewBike(Bike bikeToAdd);
 		public Bike editBike(Bike b) throws InvalidBikeException;
 		public int removeBike(int id) throws InvalidBikeException;
 		
