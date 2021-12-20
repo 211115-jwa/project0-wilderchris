@@ -41,7 +41,8 @@ public class BikeShopDriver {
 					Bike b = ctx.bodyAsClass(Bike.class); // using ctx.bodyAsClass to get the user
 					if (b != null) { // input and set it to a bike object
 						int success = us.addNewBike(b); // calls add new bike to add the bike entered
-							if(success==0) {							
+							if(success !=0) {
+								b.setId(success);
 								ctx.json(b); // output of added bike b
 								ctx.status(HttpStatus.CREATED_201); // created 201 sent
 							} else {
@@ -76,11 +77,12 @@ public class BikeShopDriver {
 						try {
 							int id = Integer.parseInt(ctx.pathParam("id"));// get path param and parse
 							Bike b = us.getById(id);						// string to integer and then get bike and assign it
-							if (b != null)		// checking for empty params
-								ctx.json(b);	// send bike result
-							else				// else respond with 
+							if (b == null || b.getName() == "")	{	// checking for empty params
 								ctx.status(404);	
 								ctx.result("Please Enter an id to search");
+							}else 				
+								ctx.json(b);	// send bike result
+								
 						} catch (NumberFormatException e) {	// no number check
 							ctx.status(400);
 							ctx.result("Bike needs to be a numerical value");

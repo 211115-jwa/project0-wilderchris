@@ -50,16 +50,14 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int addNewBike(Bike bikeToAdd) {// adds bike
 		int success = 0;
-		if (bikeToAdd == null){
-			success = 1;
-		}else {
+		
 			try { // uses the dao create
-				success = dao.create(bikeToAdd);
+				success =dao.create(bikeToAdd);
 			} catch (Exception e) { // checks for exception
-				success = 1;
+				
 				e.printStackTrace();
 			}
-		}
+		
 			
 		return success;
 	}

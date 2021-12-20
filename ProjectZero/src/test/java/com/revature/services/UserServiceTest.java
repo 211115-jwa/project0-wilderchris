@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -41,17 +40,17 @@ public class UserServiceTest {
 	private static Bike mockBike;
 
 	@BeforeAll
-	private static void mockBikeSetup() {
+	public static void mockBikeSetup() {
 		mockBike = new Bike();
-		mockBike.setName("");
-		mockBike.setType("");
-		mockBike.setBrand("");
-		mockBike.setSize("");
-		mockBike.setColor("");
-		mockBike.setFrame("");
-		mockBike.setMaterial("");
-		mockBike.setWheelSet("");
-		mockBike.setModel("");
+		mockBike.setName("mock");
+		mockBike.setType("mountain");
+		mockBike.setBrand("Huffy");
+		mockBike.setSize("XXL");
+		mockBike.setColor("Green");
+		mockBike.setFrame("Adult");
+		mockBike.setMaterial("Steel");
+		mockBike.setWheelSet("24\"");
+		mockBike.setModel("Gravel");
 	}
 
 	@BeforeAll
@@ -150,7 +149,7 @@ public class UserServiceTest {
 		when(bikedao.getById(id)).thenReturn(bikes.get(id));
 		// ArrayList to get index access
 		Bike bike = userServ.getById(id);
-		System.out.println(bike);
+		//System.out.println(bike);
 		assertEquals(bike.getName(), "");
 
 	}
@@ -191,7 +190,12 @@ public class UserServiceTest {
 		
 	@Test
 	public void testRemoveBikeWhenIdExists() {
-
+		//int id=0;
+		//int returnValue = 0;
+	//	returnValue = userServ.removeBike(id);
+		
+	
+	
 	}
 
 	@Test

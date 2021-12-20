@@ -165,7 +165,7 @@ public class BikePostgres implements BikeDAO {
 
 	@Override
 	public int delete(Bike dataToDelete) throws InvalidBikeException {// delete from database
-		int success = 1;
+		int success = 0;
 
 		try (Connection conn = connUtil.getConnection()) {
 
@@ -177,7 +177,7 @@ public class BikePostgres implements BikeDAO {
 			pStmt.setInt(1, dataToDelete.getId());
 			int rowsAffected = pStmt.executeUpdate();
 
-			if (rowsAffected == 1) {
+			if (rowsAffected == 1 && dataToDelete.getName() !="") {
 				sql = "delete from bicycle where id=?";
 				PreparedStatement pStmt2 = conn.prepareStatement(sql);
 				pStmt2.setInt(1, dataToDelete.getId());
@@ -188,10 +188,11 @@ public class BikePostgres implements BikeDAO {
 					success= 0;
 				} else {
 					conn.rollback();
-					success = 1;
+					success = 1; //fail value
 				}
 			} else {
 				conn.rollback();
+				success = 1; //fail value
 			}
 
 		} catch (SQLException e) {

@@ -1,49 +1,42 @@
 package com.revature.data;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-
+import org.junit.jupiter.api.TestMethodOrder;
 import com.revature.beans.Bike;
+import com.revature.exceptions.InvalidBikeException;
 import com.revature.postgres.BikePostgres;
-import com.revature.utils.DAOUtilities;
 
-//@ExtendWith(MockitoExtension.class)
+@TestMethodOrder(OrderAnnotation.class)
 public class BikeDAOTest {
-	List<Bike> bikes = new ArrayList<Bike>();
+	private static int generatedId = 0;
+	private static int success = 0;
+	private static int fail = 1;
 	private BikeDAO bikedao = new BikePostgres();
-
-	
 	private static Set<Bike> mockAvailableBikes;
+	private static Bike mockBike;
+	int userId = 50;
 
-	@Mock
-	DAOUtilities mockDAOUtilities;
-	@Mock
-	PreparedStatement mockPreparedStatement;
-	@Mock
-    ResultSet mockResultSet;
-	@Mock
-    Connection mockConn;
-	
-	 int userId = 50;
-	
+	@BeforeAll
+	public static void mockBikeSetup() {
+		mockBike = new Bike();
+		mockBike.setName("mock");
+		mockBike.setType("mountain");
+		mockBike.setBrand("Huffy");
+		mockBike.setSize("XXL");
+		mockBike.setColor("Green");
+		mockBike.setFrame("Adult");
+		mockBike.setMaterial("Steel");
+		mockBike.setWheelSet("24\"");
+		mockBike.setModel("Gravel");
+	}
+
 	@BeforeAll
 	public static void mockAvailableBikesSetup() {
 		mockAvailableBikes = new HashSet<>();
@@ -58,9 +51,9 @@ public class BikeDAOTest {
 			mockAvailableBikes.add(b);
 		}
 	}
+	
+	
 
-	
-	
 	@Test // testing getById if there is an Id
 	public void getByIdWhenIdExists() {
 		int idInput = 1;
@@ -74,7 +67,7 @@ public class BikeDAOTest {
 		int idInput = 99;
 		Bike idBike = null;
 		idBike = bikedao.getById(idInput);
-		//assertEquals(id.getId(), idInput);
+		
 		assertEquals(idBike.getName(), "");
 	}
 
@@ -88,25 +81,65 @@ public class BikeDAOTest {
 
 	
 	@Test // testing update if there is good bike data passed
-	public void testUpdateForGoodBikeData() {
-		//Bike createBike = null;
+	@Order(1)
+	public void testCreateforBike() {
 		
+		try {
+			generatedId = bikedao.create(mockBike);
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		
+		mockBike.setId(generatedId);
+		
+		assertTrue(mockBike.getId() > 0);	// since create returns generatedId
+										// and 0 is initial value..so if not created			
 	}
-	
+
 	
 	@Test // testing update if there is not good bike data passed
-	public void testUpdateForBadBikeData() {
-
+	@Order(2)
+	public void testUpdateBike() {
+		String modelUpdate = "Off-Road";
+		mockBike.setModel(modelUpdate);
+		try {
+			bikedao.update(mockBike);
+		} catch (InvalidBikeException e) {
+			
+			e.printStackTrace();
+		}
+		String updatedModel = bikedao.getById(generatedId).getModel();
+		assertEquals(modelUpdate , updatedModel);
 	}
+
+	
 
 	@Test // testing delete if there is good bike data passed
-	public void testDeleteForGoodData() {
-
+	@Order(3)
+	public void testDeleteBike() {
+		int returnValue = 0;
+		try {
+			returnValue = bikedao.delete(mockBike);
+		} catch (InvalidBikeException e) {
+			
+			e.printStackTrace();
+		}
+		assertEquals(success, returnValue);
 	}
 
-	@Test // testing update if there is good bike data passed
-	public void testDeleteForBadBikeData() {
-
+	@Test
+		public void testDeleteWithBadBikekData() {
+		int returnValue = 0;
+		Bike badBike = new Bike();;
+		badBike.setId(100);
+		try {
+			returnValue = bikedao.delete(badBike);
+		} catch (InvalidBikeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		assertEquals(fail, returnValue);
 	}
-
+		
 }
