@@ -40,14 +40,16 @@ public class BikeShopDriver {
 				post(ctx -> { // post end point for adding new bicycle
 					Bike b = ctx.bodyAsClass(Bike.class); // using ctx.bodyAsClass to get the user
 					if (b != null) { // input and set it to a bike object
-						us.addNewBike(b); // calls add new bike to add the bike entered
-						ctx.json(b); // output of added bike b
-						ctx.status(HttpStatus.CREATED_201); // created 201 sent
-					} else {
-						ctx.status(HttpStatus.BAD_REQUEST_400); // sent bad req. 400 and throw Invalid Entry
-						throw new InvalidBikeException("Invalid Entry"); // with custom exception
+						int success = us.addNewBike(b); // calls add new bike to add the bike entered
+							if(success==0) {							
+								ctx.json(b); // output of added bike b
+								ctx.status(HttpStatus.CREATED_201); // created 201 sent
+							} else {
+								ctx.status(HttpStatus.BAD_REQUEST_400); // sent bad req. 400 and throw Invalid Entry
+								throw new InvalidBikeException("Invalid Entry"); // with custom exception
+							}
 					}
-				});
+					});
 				path("/delete/{id}", () -> { // delete working and has error catch for invalid id
 												// that responds to user with message
 					put(ctx -> {

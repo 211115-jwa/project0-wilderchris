@@ -20,7 +20,7 @@ public class BikePostgres implements BikeDAO {
 	@Override
 	public int create(Bike dataToSave) throws Exception {// create dao for database bike addition
 		int generatedId = 0;
-
+		
 		try (Connection conn = connUtil.getConnection()) {// opens the connection.. and since try w/ resources auto
 															// closes conn
 			conn.setAutoCommit(false);
@@ -47,8 +47,10 @@ public class BikePostgres implements BikeDAO {
 			if (rs.next()) {
 				generatedId = rs.getInt("id");
 				conn.commit();
+				
 			} else {
 				conn.rollback();
+				
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -163,7 +165,7 @@ public class BikePostgres implements BikeDAO {
 
 	@Override
 	public int delete(Bike dataToDelete) throws InvalidBikeException {// delete from database
-		int success = 0;
+		int success = 1;
 
 		try (Connection conn = connUtil.getConnection()) {
 
@@ -183,9 +185,10 @@ public class BikePostgres implements BikeDAO {
 
 				if (rowsAffected <= 1) {
 					conn.commit();
+					success= 0;
 				} else {
 					conn.rollback();
-					success = 0;
+					success = 1;
 				}
 			} else {
 				conn.rollback();
