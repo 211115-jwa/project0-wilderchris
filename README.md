@@ -1,3 +1,5 @@
+# complete.
+
 # Project 0: Bike Shop
 The goal of this project is to show that you can plan, code, prioritize, and meet deadlines. Failure to present a satisfactory project will result in a release from training.
 
