@@ -17,15 +17,14 @@ import com.revature.postgres.BikePostgres;
 @TestMethodOrder(OrderAnnotation.class)
 public class BikeDAOTest {
 	private static int generatedId = 0;
-	private static int success = 0;
-	private static int fail = 1;
-	private BikeDAO bikedao = new BikePostgres();
-	private static Set<Bike> mockBikeDatabase;
-	private static Bike mockBike;
+	private static int success = 0;// variable for success
+	private static int fail = 1;// fail variable
+	private BikeDAO bikedao = new BikePostgres();// dao for testing
+	private static Bike mockBike;// mock data
 	int userId = 50;
 
 	@BeforeAll
-	public static void mockBikeSetup() {
+	public static void mockBikeSetup() {// mock bike
 		mockBike = new Bike();
 		mockBike.setName("mock");
 		mockBike.setType("mountain");
@@ -38,26 +37,11 @@ public class BikeDAOTest {
 		mockBike.setModel("Gravel");
 	}
 
-	@BeforeAll
-	public static void mockBikeDatabaseSetup() {
-		mockBikeDatabase = new HashSet<>();
-
-		for (int i = 1; i <= 5; i++) {
-			Bike b = new Bike();
-			b.setId(i);
-			if (i < 3)
-				b.setBrand("huffy");
-			b.setColor("red");
-			b.setModel("gravel");
-			mockBikeDatabase.add(b);
-		}
-	}
-
 	@Test // testing getById if there is an Id
 	public void getByIdWhenIdExists() {
 		int idInput = 1;
 		Bike b = bikedao.getById((idInput));
-		assertEquals(idInput, b.getId());
+		assertEquals(idInput, b.getId());// confirming what is returned
 
 	}
 
@@ -66,26 +50,23 @@ public class BikeDAOTest {
 		int idInput = 99;
 		Bike idBike = null;
 		idBike = bikedao.getById(idInput);
-
-		assertEquals(idBike.getName(), "");
+		assertTrue(idBike.getName().isEmpty());// check for empty test bike
 	}
 
-	@Test // testing getall for bikes
+	@Test // testing get all for bikes
 	public void testIfThereAreBikes() {//
 		Set<Bike> bike = new HashSet<Bike>();
 		bike = null;
 		bike = bikedao.getAll();
-		assertFalse(bike.isEmpty());
+		assertFalse(bike.isEmpty());// confirming not empty
 	}
 
 	@Test // testing update if there is good bike data passed
 	@Order(1)
 	public void testCreateforBike() {
-
 		try {
-			generatedId = bikedao.create(mockBike);
+			generatedId = bikedao.create(mockBike);// mock bike creation
 		} catch (Exception e) {
-
 			e.printStackTrace();
 		}
 		mockBike.setId(generatedId);
@@ -93,53 +74,52 @@ public class BikeDAOTest {
 		// and 0 is initial value..so if not created
 	}
 
-	@Test // testing update if there is not good bike data passed
+	@Test
 	@Order(2)
-	public void testUpdateBike() {
-		String modelUpdate = "Off-Road";
-		mockBike.setModel(modelUpdate);
+	public void testUpdateBike() {// testing update
+		String updatedModel;// the testing bike
+		String modelUpdate = "Off-Road";// our Bike Model update
+		mockBike.setModel(modelUpdate);// sent
 		try {
-			bikedao.update(mockBike);
+			bikedao.update(mockBike);// mock bike update
 		} catch (InvalidBikeException e) {
-
 			e.printStackTrace();
 		}
-		String updatedModel = bikedao.getById(generatedId).getModel();
-		assertEquals(modelUpdate, updatedModel);
-	}
-
-	@Test // testing delete if there is good bike data passed
-	@Order(3)
-	public void testDeleteBike() {
-		int returnValue = 0;
-		try {
-			returnValue = bikedao.delete(mockBike);
-		} catch (InvalidBikeException e) {
-
-			e.printStackTrace();
-		}
-		assertEquals(success, returnValue);
+		updatedModel = bikedao.getById(generatedId).getModel();// getting updated bike
+		assertEquals(modelUpdate, updatedModel);// checking updated model is same
 	}
 
 	@Test
-	public void testDeleteWithBadBikekData() {
-		int returnValue = 0;
-		Bike badBike = new Bike();
+	@Order(3)
+	public void testDeleteBike() {// testing delete
+		int returnValue = 0;// test value
+		try {
+			returnValue = bikedao.delete(mockBike);// mock bike delete
+		} catch (InvalidBikeException e) {
+			e.printStackTrace();
+		}
+		assertEquals(success, returnValue);// checking for success
+	}
+
+	@Test
+	public void testDeleteWithBadBikekData() {// testing how delete
+		int returnValue = 0; // handles bad data pass
+		Bike badBike = new Bike();// bad bike for empty test
 		;
-		badBike.setId(100);
+		badBike.setId(100);// out of range id
 		try {
 			returnValue = bikedao.delete(badBike);
 		} catch (InvalidBikeException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		assertEquals(fail, returnValue);
+		assertEquals(fail, returnValue);// checking if delete failed
 	}
 
 	@Test
-	public void testUpdateBadHandling() {
+	public void testUpdateBadHandling() {// testing bad data update/ need userServ to check for empty
 		Bike bike = new Bike();
 		bike.setModel("");
+		bike.setId(100);// it will update a good id/ use non existent id
 		int returnValue = 0;
 		try {
 			returnValue = bikedao.update(bike);
@@ -149,7 +129,6 @@ public class BikeDAOTest {
 		assertEquals(fail, returnValue);
 	}
 }
-
 
 //@Test
 //public void testUpdateForBadEntryException() {
