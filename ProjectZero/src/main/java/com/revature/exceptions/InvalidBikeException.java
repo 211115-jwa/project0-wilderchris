@@ -1,6 +1,6 @@
 package com.revature.exceptions;
 
-public class InvalidBikeException extends Exception {
+public class InvalidBikeException extends Exception {// InvalidBike custom Exception
 
 	
 	private static final long serialVersionUID = 1L;
@@ -17,7 +17,3 @@ public class InvalidBikeException extends Exception {
 	}
 	
 }
-//example public MyBusinessException(String message, Throwable cause, ErrorCode code) {
-//	super(message, cause);
-//	this.code = code;
-//}

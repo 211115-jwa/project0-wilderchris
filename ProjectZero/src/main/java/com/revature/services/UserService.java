@@ -5,7 +5,7 @@ import java.util.Set;
 import com.revature.beans.Bike;
 import com.revature.exceptions.InvalidBikeException;
 
-public interface UserService {
+public interface UserService {// interface for User Service Implementation
 
 
 		public Set<Bike> viewAllBikes();

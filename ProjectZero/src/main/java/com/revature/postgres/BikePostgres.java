@@ -19,14 +19,13 @@ public class BikePostgres implements BikeDAO {
 
 	@Override
 	public int create(Bike dataToSave) throws Exception {// create dao for database bike addition
-		int generatedId = 0;
-		
+		int generatedId = 0;// generated id for serial primary key in DB
+
 		try (Connection conn = connUtil.getConnection()) {// opens the connection.. and since try w/ resources auto
 															// closes conn
-			conn.setAutoCommit(false);
+			conn.setAutoCommit(false);// turns off auto commit
 
-			String sql = "insert into bicycle " 
-			+ "(id,name,type,brand,size,color,frame,material,wheelset,model) "
+			String sql = "insert into bicycle " + "(id,name,type,brand,size,color,frame,material,wheelset,model) "
 					+ "values (default,?,?,?,?,?,?,?,?,?)";
 			String[] keys = { "id" };
 
@@ -45,12 +44,12 @@ public class BikePostgres implements BikeDAO {
 			pStmt.executeUpdate();
 			ResultSet rs = pStmt.getGeneratedKeys();
 			if (rs.next()) {
-				generatedId = rs.getInt("id");
-				conn.commit();
-				
+				generatedId = rs.getInt("id");// getting generated from the DB with resultSet
+				conn.commit();// commit to DB
+
 			} else {
-				conn.rollback();
-				
+				conn.rollback();// roll back if rs.next() doesn't have id
+
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -59,41 +58,40 @@ public class BikePostgres implements BikeDAO {
 	}
 
 	@Override
-	public Bike getById(int id) {							// get by id searches the database for matching id
-		
+	public Bike getById(int id) { // get by id searches the database for matching id
+
 		Bike bike = new Bike();
 		try (Connection conn = connUtil.getConnection()) {
-		
-			String sql = "SELECT * FROM bicycle WHERE id =?";
+
+			String sql = "SELECT * FROM bicycle WHERE id =?";//SQL for id look up
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 			pStmt.setInt(1, id);
 			ResultSet rs = pStmt.executeQuery();
 
 			if (rs.next()) {
 
-				bike.setId(rs.getInt("id"));//
-				bike.setName(rs.getString("name"));//
-				bike.setType(rs.getString("type"));//
-				bike.setBrand(rs.getString("brand"));//
-				bike.setSize(rs.getString("size"));//
-				bike.setColor(rs.getString("color"));//
-				bike.setFrame(rs.getString("frame"));//
-				bike.setMaterial(rs.getString("material"));//
+				bike.setId(rs.getInt("id"));
+				bike.setName(rs.getString("name"));
+				bike.setType(rs.getString("type"));
+				bike.setBrand(rs.getString("brand"));
+				bike.setSize(rs.getString("size"));
+				bike.setColor(rs.getString("color"));
+				bike.setFrame(rs.getString("frame"));
+				bike.setMaterial(rs.getString("material"));
 				bike.setWheelSet(rs.getString("wheelset"));
-				bike.setModel(rs.getString("model"));//
+				bike.setModel(rs.getString("model"));
 
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} 
+		}
 
 		return bike;
 	}
 
 	@Override
-	public Set<Bike> getAll() {			// get all gets all
-		// TODO Auto-generated method stub
+	public Set<Bike> getAll() { // get all
 		Set<Bike> allBikes = new HashSet<>();
 		try (Connection conn = connUtil.getConnection()) {
 
@@ -101,7 +99,7 @@ public class BikePostgres implements BikeDAO {
 			String sql = "SELECT * FROM bicycle";
 			ResultSet rs = stmt.executeQuery(sql);
 
-			while (rs.next()) {
+			while (rs.next()) {// continues until the end of the resultSet
 
 				Bike b = new Bike();
 				b.setId(rs.getInt("id"));//
@@ -117,7 +115,6 @@ public class BikePostgres implements BikeDAO {
 
 				allBikes.add(b);
 			}
-
 			stmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -132,11 +129,10 @@ public class BikePostgres implements BikeDAO {
 		try (Connection conn = connUtil.getConnection()) {
 			conn.setAutoCommit(false);
 
-			String sql = "update bicycle set " 
-					+ "name=?,type=?,brand=?,size=?,color=?,"
+			String sql = "update bicycle set " + "name=?,type=?,brand=?,size=?,color=?,"
 					+ "frame=?,material=?,wheelset=?,model=?" + " where id=?";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
-			
+
 			pStmt.setString(1, dataToUpdate.getName());
 			pStmt.setString(2, dataToUpdate.getType());
 			pStmt.setString(3, dataToUpdate.getBrand());
@@ -152,21 +148,21 @@ public class BikePostgres implements BikeDAO {
 
 			if (rowsAffected == 1) {
 				conn.commit();
-				success =0;
+				success = 0;
 			} else {
 				conn.rollback();
 				success = 1;
 			}
-		}catch(SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
-			
+
 		}
-return success;
+		return success;
 	}
 
 	@Override
 	public int delete(Bike dataToDelete) throws InvalidBikeException {// delete from database
-		int success = 0;
+		int success = 0;// test variable for return
 
 		try (Connection conn = connUtil.getConnection()) {
 
@@ -178,7 +174,7 @@ return success;
 			pStmt.setInt(1, dataToDelete.getId());
 			int rowsAffected = pStmt.executeUpdate();
 
-			if (rowsAffected == 1 && dataToDelete.getName() !="") {
+			if (rowsAffected == 1 && dataToDelete.getName() != "") {
 				sql = "delete from bicycle where id=?";
 				PreparedStatement pStmt2 = conn.prepareStatement(sql);
 				pStmt2.setInt(1, dataToDelete.getId());
@@ -186,20 +182,20 @@ return success;
 
 				if (rowsAffected <= 1) {
 					conn.commit();
-					success= 0;
+					success = 0;// setting positive result
 				} else {
 					conn.rollback();
-					success = 1; //fail value
+					success = 1; // fail value
 				}
 			} else {
 				conn.rollback();
-				success = 1; //fail value
+				success = 1; // fail value
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return success;// added success variable to check for info to pass to user
+		return success;// added success variable to check for success
 	}
 
 }

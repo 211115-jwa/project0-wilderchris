@@ -1,9 +1,9 @@
 package com.revature.beans;
 
 public class Bike {
-												// bicycles bean
-	private int id;								// includes hashcode, equals and tostring
-	private String name;						// overriden methods
+	// bicycles bean
+	private int id; // includes HashCode, equals and toString
+	private String name; // Overridden methods
 	private String color;
 	private String brand;
 	private String model;
@@ -12,8 +12,7 @@ public class Bike {
 	private String frame;
 	private String material;
 	private String wheelSet;
-	
-	
+
 	public Bike() {
 		id = 0;
 		name = "";
@@ -25,17 +24,18 @@ public class Bike {
 		frame = "";
 		material = "";
 		wheelSet = "";
-			
-	};
 
-								
+	};// Initializing values
+
+	// getters and setters
 	public String getType() {
 		return type;
 	}
+
 	public void setType(String type) {
 		this.type = type;
 	}
-	
+
 	public String getSize() {
 		return size;
 	}
@@ -68,15 +68,15 @@ public class Bike {
 		this.wheelSet = wheelSet;
 	}
 
-	
 	public void setName(String name) {
-		
+
 		this.name = name;
 	}
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -111,8 +111,6 @@ public class Bike {
 
 		return brand;
 	}
-	
-	
 
 	@Override
 	public int hashCode() {
@@ -135,93 +133,85 @@ public class Bike {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		
+
 		if (obj == null)
 			return false;
-		
+
 		if (getClass() != obj.getClass())
 			return false;
-		
+
 		Bike other = (Bike) obj;
-		
+
 		if (color == null) {
 			if (other.color != null)
 				return false;
-			
+
 		} else if (!color.equals(other.color))
 			return false;
-		
+
 		if (name == null) {
 			if (other.name != null)
 				return false;
-			
+
 		} else if (!name.equals(other.name))
 			return false;
-		
+
 		if (id != other.id)
 			return false;
-		
-				
+
 		if (brand == null) {
 			if (other.brand != null)
 				return false;
-			
+
 		} else if (!brand.equals(other.brand))
 			return false;
-		
+
 		if (model == null) {
 			if (other.model != null)
 				return false;
-			
+
 		} else if (!model.equals(other.model))
 			return false;
-		
+
 		if (type == null) {
 			if (other.type != null)
 				return false;
-			
+
 		} else if (!type.equals(other.type))
 			return false;
 		if (material == null) {
 			if (other.material != null)
 				return false;
-			
+
 		} else if (!material.equals(other.material))
 			return false;
 		if (frame == null) {
 			if (other.frame != null)
 				return false;
-			
+
 		} else if (!frame.equals(other.frame))
 			return false;
 		if (size == null) {
 			if (other.size != null)
 				return false;
-			
+
 		} else if (!size.equals(other.size))
 			return false;
 		if (wheelSet == null) {
 			if (other.wheelSet != null)
 				return false;
-			
+
 		} else if (!wheelSet.equals(other.wheelSet))
 			return false;
-		
+
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Bike [id=" + id + ", Model=" + model 
-				+ ", brand=" + brand + ", color=" + color
-				+ ", name=" + name + ", type=" + type 
-				+", material="+ material+", frame="+frame
-				+", wheelset="+ wheelSet+ ", size="+size  
-				+ "]";
+		return "Bike [id=" + id + ", Model=" + model + ", brand=" + brand + ", color=" + color + ", name=" + name
+				+ ", type=" + type + ", material=" + material + ", frame=" + frame + ", wheelset=" + wheelSet
+				+ ", size=" + size + "]";
 	}
 
-	
-
-	
-	
 }

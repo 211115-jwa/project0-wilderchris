@@ -6,7 +6,7 @@ import com.revature.beans.Bike;
 import com.revature.exceptions.InvalidBikeException;
 
 
-public interface BikeDAO {
+public interface BikeDAO {// interface for Bikepostgres
 
 	public int create(Bike dataToSave) throws Exception;//
  	public Bike getById(int id);//

@@ -15,16 +15,14 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Set<Bike> getByBrand(String brand) {// search by brand using
+		
 		Set<Bike> bikes = new HashSet<Bike>(); // the getALl DAO
-		
-		allBikes = dao.getAll(); // and then iterate throught eh set
-		
-		
-		for (Iterator<Bike> it = allBikes.iterator(); it.hasNext();) {// until it finds
-			// the brand
-			Bike b = it.next(); // and then we
-			if (b.getBrand().equals(brand)) { // add it to the bike collection
-				bikes.add(b);
+		allBikes = dao.getAll(); // and then iterate through the set
+					// Bike return value of iterator// and iterates as it.hasNext()
+		for (Iterator<Bike> it = allBikes.iterator(); it.hasNext();) {
+			Bike b = it.next(); 
+			if (b.getBrand().equals(brand)) { // until it finds the brand
+				bikes.add(b);// add it to the bike collection
 			}
 		}
 		return bikes; // and return all bikes set match brand search
@@ -34,7 +32,7 @@ public class UserServiceImpl implements UserService {
 	public Set<Bike> getByModel(String model) {
 		// model search works similar to
 		Set<Bike> bikes = new HashSet<Bike>(); // brands
-		allBikes = dao.getAll(); // uses the getall and
+		allBikes = dao.getAll(); // uses the get all and
 		for (Iterator<Bike> it = allBikes.iterator(); it.hasNext();) {// then iterates through
 			Bike b = it.next(); // the set allBikes
 			if (b.getModel().equals(model)) { // b gets each bike
@@ -52,32 +50,26 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public int addNewBike(Bike bikeToAdd) {// adds bike
-		int success = 0;
-		
-			try { // uses the dao create
-				success =dao.create(bikeToAdd);
-			} catch (Exception e) { // checks for exception
-				
-				e.printStackTrace();
-			}
-		
-			
-		return success;
+		int success = 0;// check variable
+		try {
+			success = dao.create(bikeToAdd);//create
+		} catch (Exception e) { // checks for exception
+			e.printStackTrace();
+		}
+		return success;// return check
 	}
 
 	@Override
 	public Bike getById(int id) { // get by id uses the dao get by id and
 		Bike b = new Bike();
-
 		b = dao.getById(id);
 		return b; // returns the bike that matches
 	}
 
-	@Override								
-	public Bike editBike(Bike b) throws InvalidBikeException {// edit bike 
-		
-		dao.update(b);							// uses the update dao
-		return b;								// returns bike after update
+	@Override
+	public Bike editBike(Bike b) throws InvalidBikeException {// edit bike
+		dao.update(b); // uses the update dao
+		return b; // returns bike after update
 	}
 
 	@Override

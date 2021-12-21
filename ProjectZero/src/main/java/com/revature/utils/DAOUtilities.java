@@ -12,7 +12,7 @@ public class DAOUtilities {	// utility for database connection
 	private static DAOUtilities connUtil;
 	private static Properties databaseProps;
 
-	private DAOUtilities() {
+	private DAOUtilities() {// DAO Utilities class
 		databaseProps = new Properties();
 		try {
 				InputStream propertiesFileStream = DAOUtilities.class.getClassLoader()
