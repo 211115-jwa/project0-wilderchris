@@ -127,8 +127,8 @@ public class BikePostgres implements BikeDAO {
 	}
 
 	@Override
-	public void update(Bike dataToUpdate) throws InvalidBikeException { // update an existing bike in database
-
+	public int update(Bike dataToUpdate) throws InvalidBikeException { // update an existing bike in database
+		int success = 1;
 		try (Connection conn = connUtil.getConnection()) {
 			conn.setAutoCommit(false);
 
@@ -152,15 +152,16 @@ public class BikePostgres implements BikeDAO {
 
 			if (rowsAffected == 1) {
 				conn.commit();
+				success =0;
 			} else {
 				conn.rollback();
-				
+				success = 1;
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();
 			
 		}
-
+return success;
 	}
 
 	@Override

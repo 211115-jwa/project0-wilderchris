@@ -16,7 +16,10 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Set<Bike> getByBrand(String brand) {// search by brand using
 		Set<Bike> bikes = new HashSet<Bike>(); // the getALl DAO
+		
 		allBikes = dao.getAll(); // and then iterate throught eh set
+		
+		
 		for (Iterator<Bike> it = allBikes.iterator(); it.hasNext();) {// until it finds
 			// the brand
 			Bike b = it.next(); // and then we
